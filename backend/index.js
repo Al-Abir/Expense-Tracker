@@ -5,6 +5,7 @@ import userRoutes from "./routes/userRoutes.js"
 import authRoutes from "./routes/authRoutes.js"
 import accountRoutes from "./routes/accountRoutes.js"
 import transactionRoutes from "./routes/transactionRoutes.js"
+
 dotenv.config()
 
 const app = express()
@@ -17,7 +18,7 @@ app.use(express.urlencoded({ extended: true }))
 
 
 //routes
-app.use('/api/v1/user', userRoutes)
+app.use('/api/v1/user',userRoutes)
 app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/account", accountRoutes);
 app.use("/api/v1/transaction", transactionRoutes);
