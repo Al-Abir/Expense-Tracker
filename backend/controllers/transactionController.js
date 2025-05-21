@@ -13,11 +13,11 @@ export const getTransactions = async (req, res) => {
 
     const { df, dt, s } = req.query;
 
-    const { userId } = req.body.user;
+    const { userId } = req.user;
 
     const startDate = new Date(df || sevenDaysAgo);
     const endDate = new Date(dt || new Date());
-
+    endDate.setHours(23, 59, 59, 999); // <-- Fix here
     const transactions = await pool.query({
       text: `SELECT * FROM tbltransaction WHERE user_id = $1 AND createdat BETWEEN $2 AND $3 AND (description ILIKE '%' || $4 || '%' OR status ILIKE '%' || $4 || '%' OR source ILIKE '%' || $4 || '%') ORDER BY id DESC`,
       values: [userId, startDate, endDate, s],
@@ -35,7 +35,7 @@ export const getTransactions = async (req, res) => {
 
 export const getDashboardInformation = async (req, res) => {
   try {
-    const { userId } = req.body.user;
+    const { userId } = req.user;
 
     let totalIncome = 0;
     let totalExpense = 0;
@@ -197,7 +197,7 @@ export const addTransaction = async (req, res) => {
 
 export const transferMoneyToAccount = async (req, res) => {
   try {
-    const { userId } = req.body.user;
+    const { userId } = req.user;
     const { from_account, to_account, amount } = req.body;
 
     if (!(from_account || to_account || amount)) {
