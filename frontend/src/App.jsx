@@ -6,10 +6,12 @@ import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
 import Settings from "./pages/Settings"
 import  useStore  from "./store/index.js";
+import {setAuthToken} from './libs/apiCall.js'
+import{Toaster} from "sonner"
 
 const RootLayout = ()=>{
  const {user}= useStore((state) => state);
-  console.log(user)
+  setAuthToken(user?.token || " ")
   return !user ? <Navigate to="/sign-in" replace={true}></Navigate> : <>  <div className="min-h-cal(h-screen-100px)]">
     <Outlet></Outlet>
   </div></>
@@ -34,6 +36,7 @@ function App() {
                  <Route path="/sign-up" element={<SignUp></SignUp>}> </Route>
             </Routes>
            </div>
+           <Toaster richColors position="top-center"></Toaster>
       </main>
   )
 }
